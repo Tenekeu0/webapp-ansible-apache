@@ -1,0 +1,19 @@
+---
+- name: "Apache installation avec Docker"
+  hosts: prod
+  become: true
+  vars:
+    ansible_sudo_pass: Maman1998 # Mettre votre mot de passe de deploy
+  pre_task:
+   - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+  tasks:
+    - name : Create Apache container
+      community.docker.docker_container:
+        name: webapp
+        image: httpd
+        ports:
+            - "80:80"
